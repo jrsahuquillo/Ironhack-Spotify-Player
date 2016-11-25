@@ -7,6 +7,12 @@ $('form').on('submit', function(){
       getSongs();
     });
 
+// $('form').on('submit', function(){
+//       event.preventDefault();
+//       getSongs();
+//     });
+
+
 });
 
 
@@ -22,14 +28,20 @@ function getSongs(){
 function showSongs(response){
 
 var firstTrack = response.tracks.items[0];
-$('.cover').empty();
-$('.title').text(firstTrack.name);
-$('.author').text(firstTrack.artists[0].name);
-var img = firstTrack.album.images[0].url;
-var html = "<img class='album_picture' src =" + img + " >";
-$('.cover').append(html);
-console.log(firstTrack.album.images[0].url);
+$('.btn-play').removeClass('disabled'); //enables play button after search
+$('.title').text(firstTrack.name);    //sets the song title
+$('.author').text(firstTrack.artists[0].name);    //sets the author
+$('.cover-image').attr('src',firstTrack.album.images[0].url);   //sets the image
+$('.js-player').attr('src',firstTrack.preview_url);   //plays the preview track
 
+$('.btn-play').on('click', function(){
+  $('.btn-play').toggleClass('playing');
+  if ($('.btn-play').hasClass('playing')){
+    $('.js-player').trigger('play');
+  } else {
+    $('.js-player').trigger('pause');
+  }
+  });
 }
 
 function handleError (error) {
